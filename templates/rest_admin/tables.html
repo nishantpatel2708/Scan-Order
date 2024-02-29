@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{% extends 'res_base.html' %} 
+{% load static %} 
+  {% block head %}
+    <link href="{% static 'my_css/qr.css' %}" rel="stylesheet" />
+  {% endblock %} 
+{% block body %} 
+  {% if messages and order_det.table_no.rest_id == user.user_id %} 
+    {% for message in messages %} 
+      {% if message.tags == 'warning' %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endif %} 
+    {% endfor %} 
+  {% endif %}
+
+  
+  <div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        {% for i in tables %} 
+          {% if i.status == 'Occupied' %}
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+              <div class="card-header card-header-primary">
+                <h4 class="card-title">Table No: {{ i.table_no }}</h4>
+              </div>
+              <!-- <a style="text-decoration: none;" href="{% url 'rest_admin:order_det' i.id%}" title="Table"> -->
+              <div class="card-body">
+                <div class="container-fluid bg-danger">
+                <div class="stats text-dark p-5">
+                  <b>{{ i.status|capfirst }}</b>
+                </div>
+              </div>
+              </div>
+            <!-- </a> -->
+            </div>
+          </div>
+          {% else %}
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+              <div class="card-header card-header-primary">
+                <h4 class="card-title">Table No: {{ i.table_no }}</h4>
+              </div>
+              <div class="card-body">
+                <div class="container-fluid bg-success">
+                  <div class="stats text-dark p-5">
+                    <b>{{ i.status|capfirst }}</b>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endif %} 
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

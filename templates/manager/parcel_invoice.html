@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+{% load static %}
+<html>
+
+<head>
+    <title>Title</title>
+    <style type="text/css">
+        body {
+            font-weight: 200;
+            font-size: 16px;
+        }
+
+        .header {
+            font-size: 20px;
+            font-weight: 100;
+            text-align: center;
+
+        }
+
+        .title {
+            font-size: 22px;
+            font-weight: 100;
+            /* text-align: right;*/
+            padding: 10px 20px 0px 20px;
+        }
+
+        .title span {
+            color: #007cae;
+        }
+
+        .details {
+            padding: 10px 20px 0px 20px;
+
+            /*margin-left: 40%;*/
+        }
+
+
+
+        .hrItem {
+            border: none;
+            height: 1px;
+            /* Set the hr color */
+            color: #333;
+            /* old IE */
+            background-color: #fff;
+            /* Modern Browsers */
+        }
+    </style>
+</head>
+
+<body>
+    <div class='wrapper'>
+
+        <div class='header'>
+            <div style="padding: 10px;background-color: #007bff"><b style="color: white">{{ rest_name|capfirst }}</b>
+            </div>
+            <br>
+            <div style="text-align: center">
+                {{ address|capfirst }}<br>
+                {{ state|capfirst }},{{ pin_code }}<br>
+                PH: {{ phone_no }}<br>
+                <span style="margin-right: 60px;">GST No.:{{ gst_number }} </span>
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+    <hr>
+    <table>
+        <tbody>
+            <tr>
+                <td>Date: {{ date }}</td>
+                <td>Time:{{ time }}</td>
+                
+            </tr>
+            <tr>
+                <td>Customer Name: {{ customer }}</td>
+
+                <td>Bill No: {{ bill_no }}</td>
+            </tr>
+            <tr>
+                <td>Mobile No.: {{ mobile_no }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <hr>
+    <div class='details'>
+        <div>
+            <div style="color: #007bff; text-align: center; margin-bottom: 20px"><b>Welcome To {{ rest_name|capfirst }} 
+                    </b></div>
+            <table style="border: 1px solid black">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+
+                        <th>Dish Name</th>
+                        <th>Quantity</th>
+                        <th>Rate</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in Item.all %}
+                    <tr>
+                        <td style="text-align: center">{{ forloop.counter }}</td>
+                        <td style="text-align: center">{{ i.product.Dish_Name|capfirst }}</td>
+                        <td style="text-align: center">{{ i.quantity }}</td>
+                        <td style="text-align: center">{{ i.product.Price }}</td>
+                        <td style="text-align: center">{{ i.get_total_item_price }}</td>
+                    </tr>
+                    {% endfor %}
+
+                    <tr>
+
+                        <td style="text-align: right" colspan="5">
+                            Sub Total: {{ Total }}<br>
+                            SGST {{ sgst }}% : {{ sgst_amount }} <br>
+                            CGST {{ cgst }}%: {{ cgst_amount }}<br>
+                            <hr>
+                            Total: {{ total_gst }}<br>
+                            <hr>
+                            Discount: {{ Discount }}<br>
+                            <hr>
+                            Grand Total: {{ grand_total }}
+                            <br>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+            <div style="margin-top:20px; text-align: center; color: #007bff;"><b>Thank You For Your Visit</b></div>
+
+
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+{% load static %}
+{% load webpush_notifications %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" >
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons"
+      rel="stylesheet">
+
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
+    {% webpush_header %}
+    {% block head %}
+    {% endblock %}
+</head>
+
+<body>
+    <div class="d-flex" id="main-wrapper">
+        <!-- Sidebar -->
+        <div class="bg-white" id="sidebar">
+            <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom" >{% block res_name %}{{ restro.restaurant_name }}{% endblock %}</div>
+            <div class="list-group list-group-flush my-3">
+                <a href="{% url 'rest_admin:t_price' %}" class="list-group-item list-group-item-action bg-transparent second-text active" >
+                    <span class="me-3 mt-4"
+                    ><i class="material-icons">dashboard</i></span
+                    >
+                    <span>Dashboard</span>
+                </a>
+
+                <div>
+                    <a class="list-group-item list-group-item-action bg-transparent second-text fw-bold" data-bs-toggle="collapse" href="#ordercollapse" role="button" aria-expanded="false" aria-controls="ordercollapse">
+                        <span class="me-3"><i class="material-icons">layers</i></span>
+                        <span>Orders</span>
+                    </a>
+
+                    <div class="collapse px-2 py-2" id="ordercollapse">
+                        <a href="{% url 'rest_admin:t_order' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold" >
+                            <span class="me-3"
+                                ><i class="material-icons">list_alt</i></span
+                            >
+                            <span>Today's Orders</span></a
+                            >
+                        </a>
+
+                        <a href="{% url 'rest_admin:orders' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold" >
+                            <span class="me-3"
+                                ><i class="material-icons">list_alt</i></span
+                            >
+                            <span>Order List</span></a
+                            >
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <a class="list-group-item list-group-item-action bg-transparent second-text fw-bold" data-bs-toggle="collapse" href="#tablecollapse" role="button" aria-expanded="false" aria-controls="tablecollapse">
+                        <span class="me-3"><i class="material-icons">content_paste</i></span>
+                        <span>TABLE</span>
+                    </a>
+
+                    <div class="collapse px-2 py-2" id="tablecollapse">
+                        <a href="{% url 'rest_admin:qr' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold" >
+                            <span class="me-3"
+                                ><i class="material-icons">add_box</i></span
+                            >
+                            <span>ADD TABLE</span></a
+                            >
+                        </a>
+
+                        <a href="{% url 'rest_admin:table_view' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold" >
+                            <span class="me-3"
+                                ><i class="material-icons">list_alt</i></span
+                            >
+                            <span>MANAGE TABLE</span></a
+                            >
+                        </a>
+
+                        <a href="{% url 'rest_admin:table_list' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold" >
+                            <span class="me-3"
+                                ><i class="material-icons">list_alt</i></span
+                            >
+                            <span>Table List</span></a
+                            >
+                        </a>
+                    </div>
+                </div>
+
+
+                <div>
+                    <a class="list-group-item list-group-item-action bg-transparent second-text fw-bold" data-bs-toggle="collapse" href="#categorycollapse" role="button" aria-expanded="false" aria-controls="categorycollapse">
+                        <span class="me-3"><i class="material-icons">category</i></span>
+                        <span>CATEGORIES</span>
+                    </a>
+
+                    <div class="collapse px-2 py-2" id="categorycollapse">
+                        <a href="{% url 'rest_admin:add_category' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold" >
+                            <span class="me-3"
+                                ><i class="material-icons">add_box</i></span
+                            >
+                            <span>ADD CATEGORIES</span></a
+                            >
+                        </a>
+
+                        <a href="{% url 'rest_admin:cat_list' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold" >
+                            <span class="me-3"
+                                ><i class="material-icons">list_alt</i></span
+                            >
+                            <span>MANAGE CATEGORIES  {% webpush_button with_class="btn btn-outline-info" %}</span></a
+                            >
+                        </a>
+
+                    </div>
+                </div>
+
+
+                <div>
+                    <a class="list-group-item list-group-item-action bg-transparent second-text fw-bold" data-bs-toggle="collapse" href="#managercollapse" role="button" aria-expanded="false" aria-controls="managercollapse">
+                        <span class="me-3"><i class="material-icons">hail</i></span>
+                        <span>Manager</span>
+                    </a>
+
+                    <div class="collapse px-2 py-2" id="managercollapse">
+                        <a href="{% url 'rest_admin:add_manager' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold" >
+                            <span class="me-3"
+                                ><i class="material-icons">add_box</i></span
+                            >
+                            <span>ADD MANAGER</span></a
+                            >
+                        </a>
+
+                        <a href="{% url 'rest_admin:manager_list' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold" >
+                            <span class="me-3"
+                                ><i class="material-icons">list_alt</i></span
+                            >
+                            <span>MANAGE MANAGER</span></a
+                            >
+                        </a>
+
+                    </div>
+                </div>
+
+
+                <div>
+                    <a class="list-group-item list-group-item-action bg-transparent second-text fw-bold" data-bs-toggle="collapse" href="#menucollapse" role="button" aria-expanded="false" aria-controls="menucollapse">
+                        <span class="me-3"><i class="material-icons">restaurant_menu</i></span>
+                        <span>MENU</span>
+                    </a>
+
+                    <div class="collapse px-2 py-2" id="menucollapse">
+                        <a href="{% url 'rest_admin:add_menu' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold" >
+                            <span class="me-3"
+                                ><i class="material-icons">add_box</i></span
+                            >
+                            <span>ADD MENU</span></a
+                            >
+                        </a>
+
+                        <a href="{% url 'rest_admin:menu_list' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold" >
+                            <span class="me-3"
+                                ><i class="material-icons">list_alt</i></span
+                            >
+                            <span>MANAGE MENU</span></a
+                            >
+                        </a>
+
+                    </div>
+                </div>
+
+                <div>
+                    <a class="list-group-item list-group-item-action bg-transparent second-text fw-bold" data-bs-toggle="collapse" href="#employeecollapse" role="button" aria-expanded="false" aria-controls="employeecollapse">
+                        <span class="me-3"><i class="material-icons">group</i></span>
+                        <span>EMPLOYEE</span>
+                    </a>
+
+                    <div class="collapse px-2 py-2" id="employeecollapse">
+                        <a href="{% url 'rest_admin:add_employee' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold" >
+                            <span class="me-3"
+                                ><i class="material-icons">add_box</i></span
+                            >
+                            <span>ADD EMPLOYEE</span></a
+                            >
+                        </a>
+
+                        <a href="{% url 'rest_admin:emp_list' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold" >
+                            <span class="me-3"
+                                ><i class="material-icons">list_alt</i></span
+                            >
+                            <span>MANAGE EMPLOYEE</span></a
+                            >
+                        </a>
+
+                    </div>
+                </div>
+                
+                <div>
+                    <a class="list-group-item list-group-item-action bg-transparent second-text fw-bold" data-bs-toggle="collapse" href="#expensecollapse" role="button" aria-expanded="false" aria-controls="expensecollapse">
+                        <span class="me-3"><i class="material-icons">account_balance</i></span>
+                        <span>Expenses</span>
+                    </a>
+
+                    <div class="collapse px-2 py-2" id="expensecollapse">
+                        <a href="{% url 'rest_admin:add_day_expenses' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold" >
+                            <span class="me-3"
+                                ><i class="material-icons">add_box</i></span
+                            >
+                            <span>ADD Expenses</span></a
+                            >
+                        </a>
+
+                        <a href="{% url 'rest_admin:manage_day_expenses' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold" >
+                            <span class="me-3"
+                                ><i class="material-icons">list_alt</i></span
+                            >
+                            <span>MANAGE Expenses</span></a
+                            >
+                        </a>
+
+                    </div>
+                </div>
+
+                <div>
+                    <a class="list-group-item list-group-item-action bg-transparent second-text fw-bold" data-bs-toggle="collapse" href="#mexpensecollapse" role="button" aria-expanded="false" aria-controls="mexpensecollapse">
+                        <span class="me-3"><i class="material-icons">account_balance</i></span>
+                        <span>Month Expenses</span>
+                    </a>
+
+                    <div class="collapse px-2 py-2" id="mexpensecollapse">
+                        <a href="{% url 'rest_admin:add_month_expenses' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold" >
+                            <span class="me-3"
+                                ><i class="material-icons">add_box</i></span
+                            >
+                            <span>ADD Month Expenses</span></a
+                            >
+                        </a>
+
+                        <a href="{% url 'rest_admin:manage_month_expenses' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold" >
+                            <span class="me-3"
+                                ><i class="material-icons">list_alt</i></span
+                            >
+                            <span>Month Expenses</span></a
+                            >
+                        </a>
+
+                    </div>
+                </div>
+
+                <div>
+                    <a class="list-group-item list-group-item-action bg-transparent second-text fw-bold" data-bs-toggle="collapse" href="#assetscollapse" role="button" aria-expanded="false" aria-controls="assetscollapse">
+                        <span class="me-3"><i class="material-icons">web_asset</i></span>
+                        <span>Assets</span>
+                    </a>
+
+                    <div class="collapse px-2 py-2" id="assetscollapse">
+                        <a href="{% url 'rest_admin:add_assests' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold" >
+                            <span class="me-3"
+                                ><i class="material-icons">add_box</i></span
+                            >
+                            <span>Add Assests</span></a
+                            >
+                        </a>
+
+                        <a href="{% url 'rest_admin:manage_assests' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold" >
+                            <span class="me-3"
+                                ><i class="material-icons">list_alt</i></span
+                            >
+                            <span>MANAGE Assets</span></a
+                            >
+                        </a>
+
+                    </div>
+                </div>
+                
+                <div>
+                    <a class="list-group-item list-group-item-action bg-transparent second-text fw-bold" data-bs-toggle="collapse" href="#Inventorycollapse" role="button" aria-expanded="false" aria-controls="Inventorycollapse">
+                        <span class="me-3"><i class="material-icons">inventory_2</i></span>
+                        <span>Inventory</span>
+                    </a>
+
+                    <div class="collapse px-2 py-2" id="Inventorycollapse">
+                        <a href="{% url 'rest_admin:add_unit' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold" >
+                            <span class="me-3"
+                                ><i class="material-icons">add_box</i></span
+                            >
+                            <span>Add Unit</span></a
+                            >
+                        </a>
+
+                        <a href="{% url 'rest_admin:unit_list' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold" >
+                            <span class="me-3"
+                                ><i class="material-icons">list_alt</i></span
+                            >
+                            <span> Unit List</span></a
+                            >
+                        </a>
+                        <a href="{% url 'rest_admin:add_inventory' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold" >
+                            <span class="me-3"
+                                ><i class="material-icons">add_box</i></span
+                            >
+                            <span> Add Inventory</span></a
+                            >
+                        </a>
+                        <a href="{% url 'rest_admin:inventory_list' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold" >
+                            <span class="me-3"
+                                ><i class="material-icons">list_alt</i></span
+                            >
+                            <span> Inventory List</span></a
+                            >
+                        </a>
+
+                    </div>
+                </div>
+
+                <a href="{% url 'rest_admin:user_profile' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+                    <span class="me-3 mt-4"
+                    ><i class="material-icons">person</i></span
+                    >
+                    <span>My Profile</span>
+                </a>
+
+                <a href="{% url 'rest_admin:balence_sheet' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+                    <span class="me-3 mt-4"
+                    ><i class="material-icons">report</i></span
+                    >
+                    <span>Report</span>
+                </a>
+
+                <a href="{% url 'accounts:user_logout' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+                    <span class="me-3 mt-4"
+                    ><i class="material-icons ">power_settings_new</i></span
+                    >
+                    <span>Logout</span>
+                </a>
+
+            </div>
+        </div>
+
+        <div id="page-content-wrapper">
+            <nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
+                <div class="d-flex align-items-center">
+                    <i class="material-icons primary-text fs-4 me-3" id="menu-toggle">tune</i>
+                    <h2 class="fs-2 m-0">Dashboard</h2>
+                </div>
+
+
+            </nav>
+
+            <div class="container-fluid" style="padding: 15px;">
+                <div id="demo"></div>
+                {% block body %}
+                    
+                {% endblock body %}
+                    
+
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script>
+        var el = document.getElementById("main-wrapper");
+        var toggleButton = document.getElementById("menu-toggle");
+
+        toggleButton.onclick = function () {
+            el.classList.toggle("toggled");
+        };
+    </script>
+
+        <script>
+      var rest_id = "{{ restro.id }}";
+
+      var socket = new WebSocket(
+        "ws://localhost:8000/ws/waiter_call/" + rest_id
+      );
+
+      socket.onopen = function (e) {
+        console.log('websocket connected Radmin...',e);
+      };
+
+      socket.onmessage = function (e) {
+        let ale = document.getElementById("demo");
+
+        let payload = JSON.parse(e.data);
+
+        ale.innerHTML += `
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>${payload.payload.message}</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        `;
+      };
+
+      socket.onclose = function (e) {};
+    </script>
+</body>
+
+</html>

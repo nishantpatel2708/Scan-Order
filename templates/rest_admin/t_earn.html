@@ -1,0 +1,229 @@
+
+{% extends 'res_base.html' %}
+{% load static %}
+{% block head %}
+<link href="{% static 'my_css/qr.css' %}" rel="stylesheet" />{% endblock %}
+{% block body %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+
+    {% if messages and order_det.table_no.rest_id == user.user_id %}
+
+    {% for message in messages %}
+        {% if message.tags == 'warning' %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
+    {% endfor %}
+
+
+{% endif %}
+    <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+              <div class="col-lg-3 col-md-6 col-sm-6">
+                  <div class="card card-stats">
+                      <div class="card-header card-header-success">
+
+                          <p class="card-category"></p>
+                          <h3 class="card-title">Today's Earning</h3>
+                      </div>
+                      <div class="card-body text-center">
+                          {{ total }}
+                      </div>
+
+                  </div>
+              </div>
+
+              <div class="col-lg-3 col-md-6 col-sm-6">
+                  <div class="card card-stats">
+                      <div class="card-header card-header-success">
+
+                          <p class="card-category"></p>
+                          <h3 class="card-title">Month's Earning</h3>
+                      </div>
+                      <div class="card-body text-center">
+                          {{ m_total }}
+                      </div>
+
+                  </div>
+              </div>
+              <div class="col-lg-3 col-md-6 col-sm-6">
+                  <div class="card card-stats">
+                      <div class="card-header card-header-success">
+
+                          <p class="card-category"></p>
+                          <h3 class="card-title">Total Employee</h3>
+                      </div>
+                      <div class="card-body text-center ">
+                          {{ total_emp.count }}
+                      </div>
+
+                  </div>
+              </div>
+
+               <div class="col-lg-3 col-md-6 col-sm-6">
+                  <div class="card card-stats">
+                      <div class="card-header card-header-success">
+
+                          <p class="card-category"></p>
+                          <h3 class="card-title">Total Earning</h3>
+                      </div>
+                      <div class="card-body text-center">
+                          {{ a_total }}
+                      </div>
+
+                  </div>
+              </div>
+
+
+          </div>
+
+        </div>
+
+
+            <div class="row">
+                
+                <div class="col-md-6">
+
+                        <div class="card">
+                            <div class="card-header card-header-success">
+                            
+                                <p class="card-category"></p>
+                                <h3 class="card-title">Monthly Expense Chart</h3>
+                            </div>
+                            <div class="p-4">
+                            <canvas id="earnings"></canvas>
+                            
+                            <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+                            <script>
+
+                                var config = {
+                                    type: 'doughnut',
+                                    data: {
+                                        datasets: [{
+                                            data: [{{ final_earn }}, {{ final_Expense }}],
+                                    backgroundColor: [
+                                        '#ff6384', '#ffcd56'
+                                    ],
+                                    
+                                }],
+                                    labels: ['TOTAL EARN', 'FINAL EXPENSE']
+                                    },
+                                options: {
+                                    responsive: true,
+                                    
+                                }
+                                    };
+
+                                window.onload = function () {
+                                    var ctx = document.getElementById('earnings').getContext('2d');
+                                    window.myPie = new Chart(ctx, config);
+                                };
+
+                            </script>
+                            </div>
+                        </div>
+                </div>
+
+                <div class="col-md-6 ">
+                    <div class="card">
+                        <div class="card-header card-header-success">
+                        
+                            <p class="card-category"></p>
+                            <h3 class="card-title">Best Sellers Chart</h3>
+                        </div>
+                        <div class="p-4">
+                            <canvas id="best_seller"></canvas>
+                            
+                            <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+                            <script>
+
+                                $(document).ready(function () {
+                                    new Chart(document.getElementById("best_seller").getContext("2d"), {
+                                        type: "doughnut",
+                                        data: {
+                                            labels: {{ dish_name|safe }},
+                                            datasets: [
+                                                {
+                                                    backgroundColor: ['#CD6155', '#AF7AC5', '#5DADE2', '#73C6B6', '#7DCEA0', '#F7DC6F', '#F0B27A', '#F06292', '#F9A825', '#339933', '#0000CC', '#CCFF33'],
+                                                    fillColor: "#000000",
+                                                    data: {{ dish_count|safe }},
+                                                },
+                                            ]
+                                        },
+                                                    
+                                    options: {
+                                        responsive: true,
+
+
+                                    legend: {
+                                        display: true,
+
+
+                                    },
+                                    
+                                }
+                                                    });
+                                            });
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+ <div class="card">
+    <div class="card-header card-header-success">
+    
+        <p class="card-category"></p>
+        <h3 class="card-title">Sales Chart</h3>
+    </div>
+    <div class="p-4">
+            <canvas id="myChart"></canvas>
+            
+            <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+            <script>
+
+                $(document).ready(function () {
+                    new Chart(document.getElementById("myChart").getContext("2d"), {
+                        type: "bar",
+                        data: {
+                            labels: ["Jan", "Feb", "Mar", "Apr", "May", "June", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
+                            datasets: [
+                                {
+                                    backgroundColor: ['#CD6155','#AF7AC5','#5DADE2', '#73C6B6', '#7DCEA0', '#F7DC6F', '#F0B27A', '#F06292', '#F9A825', '#339933', '#0000CC', '#CCFF33'],
+                                    fillColor: "#000000",
+                                    data: {{ months_earn|safe }}
+                                },
+                        
+                
+                            ]
+                          },
+                    options: {
+                    
+                        
+                    legend: {
+                        display: false,
+                        
+                        
+                    },
+
+                    scales: {
+                        xAxes: [{
+                            stacked: true
+                        }],
+                        yAxes: [{
+                            stacked: true
+                        }],
+                    }
+                }
+                        });
+                  });
+            </script>
+    </div>
+</div>
+    </div>
+{% endblock %}

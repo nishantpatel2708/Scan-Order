@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+{% extends 'manager_base.html' %}
+{% load static %}
+{% block head %}
+<link href="{% static 'my_css/qr.css' %}" rel="stylesheet" />
+{% endblock %}
+
+
+
+{% block body %}
+    {% if messages and order_det.table_no.rest_id == user.user_id %}
+
+    {% for message in messages %}
+        {% if message.tags == 'warning' %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endif %}
+    {% endfor %}
+
+
+{% endif %}
+    <div class="card bg-white">
+    <div class="card-header card-header-primary">
+        <h4 class="card-title ">Add Customer</h4>
+        <p class="card-category"> Add Customer From Here</p>
+    </div><br>
+        <div class="card-body">
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="col-md-12">
+      <div class="form-group">
+        <label for="bmd-label-floating">Name</label>
+          {{ form.name }}
+
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="form-group">
+        <label for="bmd-label-floating">Mobile No.</label>
+          {{ form.mobile_no }}
+
+      </div>
+    </div>
+
+
+    <center><button class="btn btn-success" type="submit">submit</button></center>
+</form>
+        </div>
+    </div>
+{% endblock %}

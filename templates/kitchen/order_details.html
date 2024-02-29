@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{% extends 'k_base.html' %} 
+{% load static %} 
+  {% block head %}
+    <link href="{% static 'my_css/qr.css' %}" rel="stylesheet" />
+  {% endblock %} 
+{% block body %} 
+  {% if messages and res.rest.id == user.rest.id %} 
+    {% for message in messages %} 
+      {% if message.tags == 'warning' %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endif %} 
+    {% endfor %} 
+  {% endif %}
+  
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header card-header-primary">
+        <h4 class="card-title">Order Details</h4>
+        <p class="card-category">Order Details are Here</p>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead class="text-primary">
+              <tr>
+                <th>ID</th>
+                <th>Table No.</th>
+
+                <th>Product Name</th>
+                <th>Product Image</th>
+                <th>Quantity</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in order_det.item.all %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ i.table_no.table_no }}</td>
+
+                <td>{{ i.product.Dish_Name }}</td>
+                <td>
+                  <img
+                    src="{{ i.product.Dish_image.url }}"
+                    width="50px"
+                    height="40px"
+                  />
+                </td>
+                <td>{{ i.quantity }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

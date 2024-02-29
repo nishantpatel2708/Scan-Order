@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+{% extends 'res_base.html' %} 
+{% load static %} 
+{% block head %}
+<link href="{% static 'my_css/qr.css' %}" rel="stylesheet" />
+{% endblock %} 
+{% block body %} 
+  {% if messages %} 
+    {% for message in messages %} 
+      {% if message.tags == 'success' %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endif %} 
+    {% endfor %} 
+  {% endif %}
+
+  <div class="card bg-white">
+    <div class="card-header card-header-primary">
+      <h4 class="card-title">Check Report</h4>
+    </div>
+    <br />
+    <div class="card-body">
+      <form
+        method="get"
+        action="{% url 'rest_admin:balence_sheet' %}"
+        enctype="multipart/form-data"
+      >
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleFormControlSelect1">Select Month</label>
+              <select
+                class="form-control"
+                name="month"
+                id="exampleFormControlSelect1"
+              >
+                <option value="1">Jan</option>
+                <option value="2">Feb</option>
+                <option value="3">Mar</option>
+                <option value="4">Apr</option>
+                <option value="5">May</option>
+                <option value="6">Jun</option>
+                <option value="7">Ju</option>
+                <option value="8">Aug</option>
+                <option value="9">Sep</option>
+                <option value="10">Oct</option>
+                <option value="11">Nov</option>
+                <option value="12">Des</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleFormControlSelect1">Select Year</label>
+              <select
+                class="form-control"
+                name="year"
+                id="exampleFormControlSelect1"
+              >
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <center>
+              <button class="btn btn-success btn-sm" type="submit">Search</button>
+            </center>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card bg-white">
+    <div class="card-header card-header-primary">
+      <h4 class="card-title">Balance Sheet({{month}}, {{year}})</h4>
+    </div>
+    <br />
+
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="table-responsive">
+            <table class="table">
+              <thead class="text-primary">
+                <tr>
+                  <th>Assets</th>
+                  <th>Price</th>
+                </tr>
+              </thead>
+              <tbody class="text-dark">
+                <tr>
+                  <td>Earnings</td>
+                  <td>{{ day_total }}</td>
+                </tr>
+
+                {% for i in assests_total %}
+
+                <tr>
+                  <td>Furnishing</td>
+                  <td>{{ i.Furnishing }}</td>
+                </tr>
+                <tr>
+                  <td>Kitchen Equipements</td>
+                  <td>{{ i.Kitchen_equipements }}</td>
+                </tr>
+                <tr>
+                  <td>Others</td>
+                  <td>{{ i.Others }}</td>
+                </tr>
+
+                {% endfor %}
+
+                <tr>
+                  <th>Final Earn</th>
+                  <td>{{ final_earn }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="table-responsive">
+            <table class="table">
+              <thead class="text-primary">
+                <tr>
+                  <th>Liabilities</th>
+                  <th>Price</th>
+                </tr>
+              </thead>
+              <tbody class="text-dark">
+                {% for i in per_month_expense %}
+                <tr>
+                  <td>Rent</td>
+                  <td>{{ i.Rent }}</td>
+                </tr>
+                <tr>
+                  <td>Light Bill</td>
+                  <td>{{ i.Light_Bill }}</td>
+                </tr>
+                <tr>
+                  <td>Others</td>
+                  <td>{{ i.Others }}</td>
+                </tr>
+
+                {% endfor %}
+                <tr>
+                  <td>Month Expense</td>
+                  <td>{{ expense_total }}</td>
+                </tr>
+                <tr>
+                  <td>Salary</td>
+                  <td>{{ sal }}</td>
+                </tr>
+                <hr />
+                <tr>
+                  <th>Total Expense</th>
+                  <td>{{ final_Expense }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+  <div id="container">
+    <div class="row">
+      <div class="col-md-6">
+        <canvas class="card" id="pie-chart"></canvas>
+      </div>
+      <div class="col-md-6">
+        <canvas id=""></canvas>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+  <script>
+
+    var config = {
+      type: 'doughnut',
+      data: {
+        datasets: [{
+          data: [{{final_earn}}, {{final_Expense}}],
+      backgroundColor: [
+        '#ff6384', '#ffcd56'
+      ],
+      label: 'Population'
+          }],
+    labels: ['TOTAL EARN','FNIAL EXPENSE']
+        },
+    options: {
+      responsive: true
+    }
+      };
+
+    window.onload = function () {
+      var ctx = document.getElementById('pie-chart').getContext('2d');
+      window.myPie = new Chart(ctx, config);
+    };
+  </script>
+{% endblock %}

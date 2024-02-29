@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+{% extends 'res_base.html' %} 
+{% load static %} 
+  {% block head %}
+    <link href="{% static 'my_css/qr.css' %}" rel="stylesheet" />
+  {% endblock %} 
+  
+{% block body %} 
+  {% if messages and order_det.table_no.rest_id == user.user_id %}
+    {% for message in messages %} 
+      {% if message.tags == 'warning' %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endif %} 
+    {% endfor %} 
+  {% endif %}
+
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header card-header-primary">
+        <h4 class="card-title">Inventory</h4>
+        <p class="card-category">Manage Inventory From Here</p>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead class="text-primary">
+              <tr>
+                <th>ID</th>
+                <th>Item Name</th>
+                <th>Quantity</th>
+                <th>Unit</th>
+                <th>Price</th>
+                <th>Date</th>
+
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in data %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ i.Item_Name }}</td>
+                <td>{{ i.Item_Amount }}</td>
+                <td>{{ i.Unit }}</td>
+                <td>Rs.{{ i.Item_Price }}/-</td>
+                <td>{{ i.Date.date }}</td>
+
+                <td class="td-actions">
+                  <a
+                    href="{% url 'rest_admin:edit_inventory' i.id %}"
+                    class="btn btn-success"
+                    data-original-title=""
+                    title=""
+                  >
+                    <i class="material-icons">edit</i>
+                    <div class="ripple-container"></div
+                  ></a>
+
+                  <a
+                    href="{% url 'rest_admin:delete_inventory' i.id %}"
+                    class="btn btn-danger"
+                    data-original-title=""
+                    title=""
+                  >
+                    <i class="material-icons">close</i>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

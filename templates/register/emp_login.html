@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+{% extends 'r_base.html' %}
+{% load static %}
+{% block head %}
+<link href="{% static 'my_css/qr.css' %}" rel="stylesheet" />{% endblock %}
+{% block body %}
+    <div class="p-5">
+    <div class="card bg-white ">
+    <div class="card-header card-header-primary p-2">
+                 <CENTER><h4 class="card-title ">LOGIN</h4></CENTER>
+
+                </div><br>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="bmd-label-floating">Username:</label>
+            <input type="text" name="username" class="form-control">
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="bmd-label-floating">Password:</label>
+            <input type="password" name="password" class="form-control">
+        </div>
+    </div>
+
+
+
+
+    <center><button class="btn btn-success" type="submit">submit</button></center>
+</form>
+    </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+{% extends 'res_base.html' %} 
+{% load static %} 
+  {% block head %}
+    <link href="{% static 'my_css/qr.css' %}" rel="stylesheet" />
+  {% endblock %} 
+{% block body %} 
+  {% if messages and order_det.table_no.rest_id == user.user_id %}
+    {% for message in messages %} 
+      {% if message.tags == 'warning' %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endif %} 
+    {% endfor %} 
+  {% endif %}
+
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header card-header-primary">
+        <h4 class="card-title">Manager</h4>
+        <p class="card-category">Manage Manager From Here</p>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead class="text-primary">
+              <tr>
+                <th>ID</th>
+                <th>Profile Picture</th>
+                <th>Name</th>
+                <th>Mobile Number</th>
+                <th>Address</th>
+                <th>State</th>
+
+                <th>Category</th>
+                <th>Salary</th>
+                <th>Adhaar Card</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in emp_lists %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>
+                  {% if i.profile_photo %}
+                  <img
+                    src="{{ i.profile_photo.url }}"
+                    width="80px"
+                    height="50px"
+                  />
+                  {% endif %}
+                </td>
+                <td>{{ i.first_name }} {{ i.last_name }}</td>
+                <td>{{ i.mobile_no }}</td>
+                <td>{{ i.address }}</td>
+                <td>{{ i.country }}, {{ i.state }}</td>
+
+                <td>{{ i.Category }}</td>
+                <td>{{ i.salary }}</td>
+                <td>
+                  {% if i.Adhaar_Card %}
+                  <a href="{{ i.Adhaar_Card.url }}">Download</a>
+
+                  {% else %}
+
+                  <a href="#">No Download</a>
+                  {% endif %}
+                </td>
+
+                <td class="td-actions">
+                  <a
+                    href="{% url 'rest_admin:manager_form_edit' i.id  %}"
+                    class="btn btn-success"
+                    data-original-title=""
+                    title=""
+                  >
+                    <i class="material-icons">edit</i>
+                    <div class="ripple-container"></div
+                  ></a>
+
+                  <a
+                    href="{% url 'rest_admin:manager_delete' i.id %}"
+                    class="btn btn-danger"
+                    data-original-title=""
+                    title=""
+                  >
+                    <i class="material-icons">close</i>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

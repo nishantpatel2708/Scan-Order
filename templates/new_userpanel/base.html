@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- remix icon cdn link  -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="{% static 'assets/cafe/css/style.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <!-- Example using CDN link -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+    <title>The Garden Cafe</title>
+</head>
+
+
+<body>
+
+    <!-- header section starts  -->
+
+    <header class="header">
+
+        <a href="{% url 'restaurant:demo' table.rest.id table.table_no %}" class="logo"> <i class="ri-store-2-line"></i> The Garden Cafe </a>
+
+        <nav class="navbar">
+            <a href="{% url 'restaurant:menu' table.rest.id table.table_no %}">home</a>
+            <a href="#about">about</a>
+            <a href="#popular">popular</a>
+            <a href="#menu">menu</a>
+            <a href="#order">order</a>
+            <a href="#blogs">blogs</a>
+        </nav>
+
+        <div class="icons">
+            <div id="menu-btn" class="ri-menu-line"></div>
+            <div id="search-btn" class="ri-search-line"></div>
+            <a href="{% url 'restaurant:order_summary' table.rest.id table.table_no %}">
+                <div id="cart-btn" class="ri-shopping-cart-line" >
+                    <span class="cart-count" id="cart-count">{{ cartCount }}</span>
+                </div>
+            </a>
+            <!-- <div id="login-btn" class="ri-user-line"></div> -->
+        </div>
+
+    </header>
+    <!-- header section ends  -->
+
+
+        <!-- search-form start -->
+        <section class="search-form-container">
+
+            <form action="">
+                <input type="search" placeholder="search here..." id="search-box">
+                <label for="search-box" class="ri-search-line"></label>
+            </form>
+    
+        </section>
+    
+        <!-- search-form end -->
+    
+    
+    
+        <!-- login-form start -->
+    
+        <div class="login-form-container">
+    
+            <form action="">
+                <h3>login form</h3>
+                <input type="email" placeholder="enter your email" class="box">
+                <input type="password" placeholder="enter your password" class="box">
+                <div class="remember">
+                    <input type="checkbox" name="" id="remember-me">
+                    <label for="remember-me">remember me</label>
+                </div>
+                <input type="submit" value="login now" class="btn">
+                <p>forget password? <a href="#">click here</a> </p>
+                <p>donot have an account? <a href="#">create one</a> </p>
+            </form>
+    
+        </div>
+    
+        <!-- login-form end -->
+
+        {% block start %}
+    
+        {% endblock  %}
+
+
+    <script src="{% static 'assets/cafe/js/script.js' %}"></script>
+</body>

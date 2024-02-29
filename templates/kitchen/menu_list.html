@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+{% extends 'k_base.html' %} 
+{% load static %} 
+  {% block head %}
+    <link href="{% static 'my_css/qr.css' %}" rel="stylesheet" />
+  {% endblock %} 
+{% block body %} 
+  {% if messages and res.rest.id == user.rest.id %} 
+    {% for message in messages %} 
+      {% if message.tags == 'warning' %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endif %} 
+    {% endfor %} 
+  {% endif %}
+  
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header card-header-primary">
+        <h4 class="card-title">Menu</h4>
+        <p class="card-category">Manage Menu From Here</p>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead class="text-primary">
+              <tr>
+                <th>ID</th>
+                <th>Dish Image</th>
+                <th>Dish Name</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Pieces</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in menu_lists %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>
+                  <img src="{{ i.Dish_image.url }}" width="80px" height="50px" />
+                </td>
+                <td>{{ i.Dish_Name }}</td>
+                <td>{{ i.Dish_Description }}</td>
+                <td>{{ i.category }}</td>
+                <td>{{ i.Price }}</td>
+
+                <td>{{ i.pices }}</td>
+                <td>{{ i.status }}</td>
+                <td>
+                  {% if i.status == 'available' %}
+                  <a
+                    href="{% url 'kitchen:menu_state' i.id %}"
+                    class="btn btn-danger"
+                    data-original-title=""
+                    title=""
+                  >
+                    NA
+                  </a>
+                  {% else %}
+                  <a
+                    href="{% url 'kitchen:menu_state' i.id %}"
+                    class="btn btn-success"
+                    data-original-title=""
+                    title=""
+                  >
+                    A
+                  </a>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,118 @@
+
+
+{% extends 'new_userpanel/base.html' %}
+
+{% block start %}
+
+<section class="shopping-cart-container">
+
+    <div class="products-container">
+
+        <h3 class="title">your products</h3>
+
+        <div class="box-container">
+            {% if cart %}
+                {% for i in cart %}
+                <div class="box">
+                    <a href="{% url 'restaurant:remove_from_cart' i.product.id table.id %}"><i class="ri-close-line close-icon"></i></a>
+                    <div>
+                        <img src="{{ i.product.Dish_image.url }}" alt="cart">
+                        <h3>{{ i.product.Dish_Name }}</h3>
+                    </div>
+                    <div class="content">
+                        <span> quantity : </span>
+                        <div class="quantity-input">
+                            <button class="quantity-btn minus-btn" onclick="decreaseQuantity('{{ i.product.id }}', '{{ table.id }}')">-</button>
+                            <input readonly type="number" name="" min="0" value="{{ i.quantity }}" id="quantityInput_{{ i.id }}" oninput="handleQuantityChange(this, '{{ i.product.id }}', '{{ table.id }}')">
+                            <button class="quantity-btn plus-btn" onclick="increaseQuantity('{{ i.product.id }}', '{{ table.id }}')">+</button>
+                        </div>
+                        <br>
+                        <span> price : </span>
+                        <span class="price">₹ {{ i.product.Price }} * {{ i.quantity }} = {{ i.get_total_item_price }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <h3 style="text-align: center;">
+                    Cart is empty....
+                </h3>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <div class="cart-total">
+
+        <h3 class="title"> cart total </h3>
+
+        <div class="box">
+            <h2 class="subtitle">Sub Total: <span>₹{{ orders.get_total }}</span> </h2>
+            <h1 class="subtitle">SGST{{ orders.table_no.rest.SGST }}%: <span>₹{{ orders.sgst_price }}</span> </h1>
+            <h1 class="subtitle">CGST{{ orders.table_no.rest.CGST }}%: <span>₹{{ orders.cgst_price }}</span> </h1>
+            <h2 class="total"> Total : <span>₹{{ orders.sc_total }}</span> </h2>
+            <h2 class="total"> Discount: {{ orders.table_no.rest.discount }}%</h2>
+            <h3 class="total">Grand Total : <span>₹{{ orders.gst_total }}</span> </h3>
+
+            <a href="{% url 'restaurant:place_order' table.rest.id table.table_no %}" class="btn">proceed to checkout</a>
+        </div>
+
+    </div>
+
+</section>
+
+
+<script>
+    $('#cart-count').hide()
+    
+    // function decreaseQuantity(productId, tableId) {
+    //     var url = `/restaurant/remove_from_cart_order/${productId}/${tableId}/`;
+    //     window.location.href = url;
+    // }
+
+    // function increaseQuantity(productId, tableId) {
+    //     var url = `/restaurant/add_to_cart_order/${productId}/${tableId}/`;
+    //     window.location.href = url;
+    // }
+
+    function handleQuantityChange(inputElement, productId, tableId) {
+    var newQuantity = parseInt(inputElement.value);
+    var oldQuantity = parseInt(inputElement.defaultValue);
+
+    if (newQuantity > oldQuantity) {
+        var url = `/restaurant/add_to_cart_order/${productId}/${tableId}/`;
+        window.location.href = url;
+        } else if (newQuantity < oldQuantity) {
+            var url = `/restaurant/remove_from_cart_order/${productId}/${tableId}/`;
+            window.location.href = url;
+        }
+
+        inputElement.defaultValue = newQuantity;
+    }
+    </script>
+
+    <script>
+        function increaseQuantity (productId, tableId) {
+            $.ajax({
+                url: window.location.origin + `/restaurant/add_to_cart_order/${productId}/${tableId}`,
+                method: "GET",
+                success: function (data) {
+                    if(data.status === 1){
+                        window.location.reload();
+                    }
+            }
+            })
+        }
+
+        function decreaseQuantity (productId, tableId) {
+            $.ajax({
+                url: window.location.origin + `/restaurant/remove_from_cart_order/${productId}/${tableId}`,
+                method: "GET",
+                success: function (data) {
+                    if(data.status === 1){
+                        window.location.reload();
+                    }
+            }
+            })
+        }
+    </script>
+    {% endblock %}

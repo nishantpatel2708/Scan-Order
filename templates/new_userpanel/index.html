@@ -1,0 +1,199 @@
+
+{% extends 'new_userpanel/base.html' %}
+
+{% block start %}
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <div class="modal-content">
+      <div class="image">
+        <img id="modalImage" src="" alt="">
+      </div>
+        <div class="content">
+            <h3 id="modalDishName"></h3>
+            <div class="stars" id="modalRating">
+            <!-- Rating will be dynamically set -->
+            </div>
+            <div class="price" id="modalPrice"></div>
+            <!-- <a href="#" id="modalAddToCart" class="btn">Add to cart</a> -->
+            </div>
+        </div>
+    </div>
+
+    <!-- category section starts  -->
+
+    <section class="category swiper-container">
+        <div class="swiper-wrapper">
+            {% for i in cat %}
+            <div class="swiper-slide">
+                <a href="#" onclick="getmenu(event, '{{i.Category_Name}}')" class="box">
+                    <img src="{{i.Category_Image.url}}" alt="Cat img">
+                    <h3>{{ i.Category_Name }}</h3>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+            <!-- Add Pagination -->
+    <!-- <div class="swiper-pagination"></div> -->
+    <!-- Add Navigation -->
+    <!-- <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div> -->
+    </section>
+
+    <!-- category section ends -->
+
+    <!-- toast start -->
+    <div class="custom-container">
+        <div class="toast" id="customToast">
+            <span class="message">Successfully add to Cart </span>
+            <span class="close-btn" onclick="closeToast()">  &times;</span>
+        </div>
+    </div>
+    <!-- toast end -->
+
+    <!-- popular section starts  -->
+
+    <section class="popular" id="popular">
+
+
+        <div class="heading">
+            <span>popular food</span>
+            <!-- <h3>our special dishes</h3> -->
+        </div>
+
+        <div class="box-container" >
+            {% for i in menu %}
+            <div class="box menu-box" data-category="{{ i.category }}">
+                <!-- <a href="#" class="ri-heart-line wishlist-icon"></a> -->
+                <div class="image">
+                    <img src="{{ i.Dish_image.url }}" onclick="openModal('{{ i.Dish_image.url }}', '{{ i.Dish_Name }}', '{{ i.Rating }}', '{{ i.Price }}', '{{ i.id }}', '{{ table.id }}')" alt="">
+                </div>
+                <div class="content">
+                    <h3>{{ i.Dish_Name }}</h3>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span> (50) </span>
+                    </div>
+                    <div class="price">₹{{ i.Price }}
+                        <!-- <span>₹50.00</span> -->
+                    </div>
+                    <a href="#" onclick="addtocart('{{i.id}}', '{{table.id}}'); return false;" id="addtocart_{{i.id}}" class="btn">add to cart
+                        {% for j in cart %} 
+                            {% if j.product.id == i.id %}       
+                                ( {{ j.quantity }} )
+                            {% endif %}
+                        {% endfor %}
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <script>
+        function getmenu(event, categoryName) {
+            event.preventDefault();
+            // Hide all menu items
+            var menuItems = document.querySelectorAll('.menu-box');
+            menuItems.forEach(function(item) {
+                item.style.display = 'none';
+            });
+        
+            // Show only items that match the selected category
+            var matchingItems = document.querySelectorAll('.menu-box[data-category="' + categoryName + '"]');
+            matchingItems.forEach(function(item) {
+                item.style.display = 'block';
+            });
+        }
+
+        // window.onload = function() {
+        //     getmenu(event, 'South Indian');
+        // }
+
+
+        
+        function addtocart (id, table) {
+            const csrfToken = "{{ csrf_token }}";
+            data = {'id': id, 'table': table}
+            $.ajax({
+                url: `{% url 'restaurant:add_to_cart_ajax' %}`,
+                method: "POST",
+                headers: {'X-CSRFToken': csrfToken},
+                data: {id: id, table: table},
+                success: function (data) {
+                    var cartCount = parseInt(document.getElementById('cart-count').innerHTML, 10);
+                    var element = document.getElementById(`addtocart_${id}`);
+                    if (data.status === 'True') {
+                        element.innerHTML = `add to cart ( ${data.qty} )`;
+                        $('#cart-count').text(cartCount + 1);
+                        showToast()
+                }
+            }
+            })
+        }
+
+    </script>
+    <script>
+        var swiper = new Swiper('.swiper-container', {
+            slidesPerView: 3,
+            spaceBetween: 10,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+        });
+    </script>
+
+
+    <!-- Toast Scripts -->
+    <script>
+        function showToast() {
+            var toast = document.getElementById('customToast');
+            toast.classList.add('active');
+            
+            setTimeout(function() {
+              toast.classList.remove('active');
+            }, 3000);
+          }
+          
+          function closeToast() {
+            var toast = document.getElementById('customToast');
+            toast.classList.remove('active');
+          }
+          
+      </script>
+      
+        <script>
+            function openModal(imageUrl, dishName, rating, price, productId, tableId) {
+                const modal = document.getElementById("myModal");
+                const modalImage = document.getElementById("modalImage");
+                const modalDishName = document.getElementById("modalDishName");
+                const modalRating = document.getElementById("modalRating");
+                const modalPrice = document.getElementById("modalPrice");
+                // const modalAddToCart = document.getElementById("modalAddToCart");
+            
+                modalImage.src = imageUrl;
+                modalDishName.textContent = dishName;
+                modalRating.innerHTML = ""; // You can set the star rating here using 'rating' variable
+                modalPrice.textContent = price;
+            
+                // modalAddToCart.href = "#" + productId + "_" + tableId;
+                modal.style.display = "block";
+            }
+            
+            function closeModal() {
+                const modal = document.getElementById("myModal");
+                modal.style.display = "none";
+            }
+        </script>
+
+      {% endblock %}

@@ -1,0 +1,66 @@
+<script>
+
+  var config = {
+    type: 'doughnut',
+    data: {
+      datasets: [{
+        data: [{{final_earn}}, {{final_Expense}}],
+    backgroundColor: [
+      '#ff6384', '#ffcd56'
+    ],
+    label: 'Population'
+        }],
+  labels: ['TOTAL EARN','FNIAL EXPENSE']
+      },
+  options: {
+    responsive: true
+  }
+    };
+
+  window.onload = function () {
+    var ctx = document.getElementById('pie-chart').getContext('2d');
+    window.myPie = new Chart(ctx, config);
+  };
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+<canvas id="myChart"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script>
+
+  $(document).ready(function () {
+    new Chart(document.getElementById("myChart").getContext("2d"), {
+      type: "bar",
+      data: {
+        labels: ["jan", "feb"],
+        datasets: [
+          {
+            backgroundColor: ["#673AB7", "#90A4AE"],
+            fillColor: "#000000",
+            data: [{{ final_Expense }}, {{ final_earn }}]
+    },
+      {
+        backgroundColor: ["#E1BEE7", "#0D47A1"],
+        data: [{{ final_Expense }}, {{ final_earn }}]
+              },
+
+            ]
+          },
+    options: {
+    legend: {
+      display: false
+    },
+    scales: {
+      xAxes: [{
+        stacked: true
+      }],
+      yAxes: [{
+        stacked: true
+      }],
+    }
+  }
+        });
+  });
+</script>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="{% static 'bootstrap/css/bootstrap.min.css' %}"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <title>Waiter Dashboard</title>
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
+    {% block head %} {% endblock %}
+  </head>
+
+  <body>
+    <div class="d-flex" id="main-wrapper">
+      <!-- Sidebar -->
+      <div class="bg-white" id="sidebar">
+        <div
+          class="
+            sidebar-heading
+            text-center
+            py-4
+            primary-text
+            fs-4
+            fw-bold
+            text-uppercase
+            border-bottom
+          "
+        >
+          {% block res_name %}{{ restro.restaurant_name }}{% endblock %}
+        </div>
+        <div class="list-group list-group-flush my-3">
+          <a
+            href="{% url 'waiter:table_view' %}"
+            class="
+              list-group-item list-group-item-action
+              bg-transparent
+              second-text
+              active
+            "
+          >
+            <span class="me-3 mt-4"
+              ><i class="material-icons">dashboard</i></span
+            >
+            <span>Dashboard</span>
+          </a>
+
+          <a
+            href="{% url 'waiter:t_order' %}"
+            class="
+              list-group-item list-group-item-action
+              bg-transparent
+              second-text
+              fw-bold
+            "
+          >
+            <span class="me-3 mt-4"
+              ><i class="material-icons">list_alt</i></span
+            >
+            <span>Today's Orders</span>
+          </a>
+
+          <a
+            href="{% url 'accounts:user_logout' %}"
+            class="
+              list-group-item list-group-item-action
+              bg-transparent
+              second-text
+              fw-bold
+            "
+          >
+            <span class="me-3 mt-4"
+              ><i class="material-icons">power_settings_new</i></span
+            >
+            <span>Logout</span>
+          </a>
+        </div>
+      </div>
+
+      <div id="page-content-wrapper">
+        <nav
+          class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4"
+        >
+          <div class="d-flex align-items-center">
+            <i class="material-icons primary-text fs-4 me-3" id="menu-toggle"
+              >tune</i
+            >
+            <h2 class="fs-2 m-0">Dashboard</h2>
+          </div>
+        </nav>
+
+        <div class="container-fluid px-4">
+          <div id="demo"></div>
+          {% block body %} {% endblock body %}
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      var el = document.getElementById("main-wrapper");
+      var toggleButton = document.getElementById("menu-toggle");
+
+      toggleButton.onclick = function () {
+        el.classList.toggle("toggled");
+      };
+    </script>
+
+    <script>
+      var rest_id = "{{ restro.id }}";
+
+      var socket = new WebSocket(
+        "ws://localhost:8000/ws/waiter_call/" + rest_id
+      );
+
+      socket.onopen = function (e) {
+        console.log('websocket connted admin...',e);
+      };
+
+      socket.onmessage = function (e) {
+        console.log('message...', e)
+        let ale = document.getElementById("demo");
+
+        let payload = JSON.parse(e.data);
+
+        ale.innerHTML += `
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>${payload.payload.message}</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        `;
+      };
+
+      socket.onclose = function (e) {};
+    </script>
+  </body>
+</html>

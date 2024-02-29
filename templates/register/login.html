@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+{% extends 'r_base.html' %} 
+{% load static %} 
+{% block head %}
+<link href="{% static 'my_css/qr.css' %}" rel="stylesheet" />
+{% endblock %} 
+{% block body %} 
+    {% if messages %} 
+        {% for message in messages %} 
+            {% if message.tags == 'error' %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ message }}
+             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endif %}
+        {% endfor %} 
+    {% endif %}
+
+    <div class="card bg-white">
+        <div class="card-header card-header-primary p-2">
+            <center><h4 class="card-title">LOGIN</h4></center>
+        </div>
+        <br />
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="col-md-12">
+                    <div class="form-floating mb-3">
+                        <input type="text" name='username' class="form-control" id="floatingInput" placeholder="Username">
+                        <label for="floatingInput">Username</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating mb-3">
+                        <input type="password" name="password" class="form-control" id="floatingInput" placeholder="password">
+                        <label for="floatingInput">Password</label>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-3">
+                    <div class="form-group">
+                        <center>
+                            <button class="btn btn-success" type="submit">submit</button>
+                        </center>
+                        </div>
+                    </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

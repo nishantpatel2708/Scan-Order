@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+{% extends 'manager_base.html' %} 
+{% load static %} 
+  {% block head %}
+      <link href="{% static 'my_css/qr.css' %}" rel="stylesheet" />
+  {% endblock %} 
+{% block body %} 
+  {% if messages and order_det.table_no.rest_id == user.user_id %}
+    {% for message in messages %} 
+      {% if message.tags == 'warning' %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endif %} 
+    {% endfor %} 
+  {% endif %}
+
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header card-header-primary">
+        <h4 class="card-title">Search by Date</h4>
+      </div>
+      <div class="card-body">
+        <form method="post" class="form-inline">
+          {% csrf_token %}
+          <div class="">
+            <div class="form-group mr-3">
+              <label class="">From Date:</label>
+              <input type="date" name="fromDate" class="form-control" />
+            </div>
+          </div>
+
+          <div class="">
+            <div class="form-group mr-3">
+              <label class="">To Date:</label>
+              <input type="date" name="toDate" class="form-control" />
+            </div>
+          </div>
+
+          <button class="btn btn-primary" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header card-header-primary">
+        <h4 class="card-title">Order</h4>
+        <p class="card-category">Manage Order From Here</p>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead class="text-primary">
+              <tr>
+                <th>ID</th>
+                <th>Table No</th>
+                <th>Cart Price</th>
+
+                <th>Date</th>
+                <th>Details</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in order_list %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ i.table_no.table_no }}</td>
+                <td>{{ i.gst_total }}</td>
+
+                <td>{{ i.ordered_date }}</td>
+
+                <td>
+                  <a
+                    class="btn btn-primary"
+                    href="{% url 'manager:order_det' i.id%}"
+                    >DETAILS</a
+                  >
+                </td>
+
+                <td>{{ i.status }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,106 @@
+<!doctype html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="{% static 'menu_page/w3.css' %}">
+    <link rel="stylesheet" href="{% static 'menu_page/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'menu_page/font-awesome.min.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'my_css/menu.css' %}">
+
+    <title>Scan N Order</title>
+</head>
+<body style="margin-left: 18px; margin-right: 10px;">
+<!-- navigation Start Here -->
+<div class="topnav" style="background-color: #ABE63A;" id="myTopnav">
+  <a href="#home" class="text-white">{{ table.rest.restaurant_name|capfirst }}</a>
+
+</div>
+<!-- end here -->
+
+{% if orders %}
+{% for i in orders.item.all %}
+      <div class="con">
+        <div class="w3-panel w3-card-4">
+
+          <div class="row">
+            <div class="col-lg-3">
+              <div class="horizontal-card">
+
+                <img src="{{ i.product.Dish_image.url }}" />
+                <div class="horizontal-card-body">
+
+                  <h4 class="card-title" >{{ i.product.Dish_Name }}</h4>
+                  <span class="card-text" style="font-size: 12px;">{{ i.product.Dish_Description }}</span>
+                    <p class="text-dark mt-2"><b> <span class="" style="color: #ABE63A">₹</span> {{ i.product.Price }}</b></p>
+                    <p class="text-dark "><b> <span class="" style="color: #ABE63A">₹</span>{{ i.product.Price }} * {{ i.quantity }} = <span class="" style="color: #ABE63A">₹</span> {{ i.get_total_item_price }}</b></p>
+                    <form action="{% url 'restaurant:com' i.id %}" method="get" id="add{{ i.id }}">
+
+                    <input type="text" class="ml-1 col-8" name="com{{ i.id }}" placeholder="Add Comment">
+                        <button type="submit" class="btn btn-light p-1" style="background-color: #ABE63A" form="add{{ i.id }}">Note</button>
+                    </form>
+                </div>
+                <div class="horizontal-card-footer">
+                  <a class="minus" href="{% url 'restaurant:remove_single' i.product.id table.id %}" > - </a>
+                  <a class="card-text status p-1" >
+                      0 {{ i.quantity }}
+                  </a>
+
+                   <a class="plus" href="{% url 'restaurant:add_to_cart' i.product.id table.id %}" > + </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% endfor %}
+
+      <div class="text-right footer p-2">
+          Sub Total: <span class="" style="color: #ABE63A">₹</span>{{ orders.get_total }}<br>
+            SGST {{ orders.table_no.rest.SGST }}%: {{ orders.sgst_price }}<br>
+            CGST {{ orders.table_no.rest.CGST }}%: {{ orders.cgst_price }}<br>
+          <hr>
+            Total: {{ orders.sc_total }}
+          <hr>
+            Discount {{ orders.table_no.rest.discount }}
+            <hr>
+            Grand Total: <span class="" style="color: #ABE63A">₹</span>{{ orders.gst_total }}<br>
+          <a href="{% url 'restaurant:place_order' table.rest.id table.table_no %}"><button   class="btn btn-outline-success col-12" style="background-color: white; color: #ABE63A; font-size: large" ><b>Place Order</b></button></a>
+
+     </div>
+{% endif %}
+<br><br><br>
+<!-- fixed bottom -->
+<div class="foot">
+<nav class="nav">
+  <a href="{% url 'restaurant:menu' table.rest.id table.table_no %}" class="nav__link">
+    <i class="material-icons nav__icon">dashboard</i>
+    <span class="nav__text">MENU</span>
+  </a>
+  <a href="{% url 'restaurant:order_summary' table.rest.id table.table_no %}" class="nav__link nav__link--active">
+    <i class="material-icons nav__icon">person</i>
+    <span class="nav__text">MY ORDERS</span>
+  </a>
+  <a href="{% url 'restaurant:call_waiter' table.id %}" class="nav__link">
+    <i class="material-icons nav__icon">devices</i>
+    <span class="nav__text">CALL A WAITER</span>
+  </a>
+
+</nav>
+</div>
+<!-- End Here -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+
+
+

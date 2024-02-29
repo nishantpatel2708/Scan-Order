@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+{% extends 'res_base.html' %} 
+{% load static %} 
+  {% block head %}
+    <link href="{% static 'my_css/qr.css' %}" rel="stylesheet" />
+  {% endblock %} 
+
+{% block body %} 
+  {% if messages and order_det.table_no.rest_id == user.user_id %}
+    {% for message in messages %} 
+      {% if message.tags == 'warning' %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endif %} 
+    {% endfor %} 
+  {% endif %}
+
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header card-header-primary">
+        <h4 class="card-title">User Info</h4>
+        <p class="card-category">Manage Your details From Here</p>
+      </div>
+      <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="bmd-label-floating">UserName</label>
+              {{ form.username}}
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="bmd-label-floating">First Name</label>
+              {{ form.first_name }}
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="bmd-label-floating">Last Name</label>
+              {{ form.last_name}}
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="bmd-label-floating">E Mail</label>
+              {{ form.email }}
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="bmd-label-floating">Restaurant's Name</label>
+              {{ form.restaurant_name }}
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="bmd-label-floating">Country</label>
+              {{ form.country }}
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="bmd-label-floating">Land Line Number</label>
+              {{ form.land_line_number }}
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="bmd-label-floating">Mobile No</label>
+              {{ form.mobile_no }}
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="bmd-label-floating">Address</label>
+              {{ form.address }}
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="bmd-label-floating">State</label>
+              {{ form.state }}
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="bmd-label-floating">Pin Code</label>
+              {{ form.pin_code }}
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="bmd-label-floating">GST Number</label>
+              {{ form.GST_Number }}
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="bmd-label-floating">SGST Percentage</label>
+              {{ form.SGST }}
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="bmd-label-floating">CGST Percentage</label>
+              {{ form.CGST }}
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="bmd-label-floating">Discount</label>
+              {{ form.discount }}
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="bmd-label-floating">Offers</label>
+              {{ form.offer }}
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-success">Update</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

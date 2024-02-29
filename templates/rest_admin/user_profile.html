@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+{% extends 'res_base.html' %} 
+{% load static %} 
+{% block head %}
+<link href="{% static 'my_css/qr.css' %}" rel="stylesheet" />
+{% endblock %} 
+  {% block body %} 
+    {% if messages and order_det.table_no.rest_id == user.user_id %}
+      {% for message in messages %} 
+        {% if message.tags == 'warning' %}
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endif %} 
+      {% endfor %} 
+    {% endif %}
+    
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header card-header-primary">
+        <h4 class="card-title">User Info</h4>
+        <p class="card-category">Manage Your details From Here</p>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead class="text-primary">
+              <tr>
+                <th>ID</th>
+                <th>Restaurants Name</th>
+                <th>Mobile No</th>
+
+                <th>Address</th>
+                <th>Land Line No</th>
+                <th>Restaurant Image</th>
+
+                <th>GST Info</th>
+                <th>Discount</th>
+
+                <th>Offers</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>{{ user.restaurant_name }}</td>
+                <td>{{ user.mobile_no }}</td>
+
+                <td>{{ user.address }}, {{ user.state }},{{ user.pin_code }}</td>
+                <td>{{ user.land_line_number }}</td>
+                <td>
+                  <img
+                    src="{{ user.profile_photo.url }}"
+                    alt="no image"
+                    width="50px"
+                    height="50px"
+                  />
+                </td>
+                <td>{{ user.GST_Number }}</td>
+                <td>{{ user.discount }}</td>
+                <td>{{ user.offer }}</td>
+                <td class="td-actions">
+                  <a
+                    href="{% url 'rest_admin:update_u' user.id %}"
+                    class="btn btn-success"
+                    data-original-title=""
+                    title=""
+                  >
+                    <i class="material-icons">edit</i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

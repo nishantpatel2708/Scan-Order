@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+{% extends 'k_base.html' %} 
+{% load static %} 
+  {% block head %}
+    <link href="{% static 'my_css/qr.css' %}" rel="stylesheet" />
+  {% endblock %} 
+{% block body %} 
+  {% if messages and res.rest.id == user.rest.id %} 
+    {% for message in messages %} 
+      {% if message.tags == 'warning' %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endif %} 
+    {% endfor %} 
+  {% endif %}
+
+  <div class="card">
+    <div class="card-header card-header-primary">
+      <h4 class="card-title">Add Categories</h4>
+      <p class="card-category">Add Categories From Here</p>
+    </div>
+    <br />
+    <div class="card-body">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="bmd-label-floating">Category Name</label>
+            {{ form.Category_Name }}
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="bmd-label-floating">Description</label>
+            {{ form.Description }}
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="form">
+            <label class="bmd-label-floating">Add Category Image</label>
+            {{ form.Category_Image }}
+          </div>
+        </div>
+
+        <center>
+          <button class="btn btn-success" type="submit">submit</button>
+        </center>
+      </form>
+    </div>
+  </div>
+{% endblock %}

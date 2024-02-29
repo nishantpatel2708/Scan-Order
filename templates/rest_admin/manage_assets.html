@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+{% extends 'res_base.html' %} 
+{% load static %} 
+    {% block head %}
+        <link href="{% static 'my_css/qr.css' %}" rel="stylesheet" />
+    {% endblock %} 
+{% block body %} 
+    {% if messages and order_det.table_no.rest_id == user.user_id %}
+        {% for message in messages %} 
+            {% if message.tags == 'warning' %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %} 
+        {% endfor %} 
+    {% endif %}
+    
+    <div class="col-md-12">
+    <div class="card">
+        <div class="card-header card-header-primary">
+        <h4 class="card-title">Manage Assests</h4>
+        <p class="card-category">Manage Assests Here</p>
+        </div>
+        <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
+            <thead class="text-primary">
+                <tr>
+                <th>ID</th>
+                <th>Furnishing</th>
+                <th>Kitchen Equipements</th>
+                <th>Others</th>
+                <th>Month</th>
+                <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in data %}
+                <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>Rs.{{ i.Furnishing }}/-</td>
+                <td>Rs.{{ i.Kitchen_equipements }}/-</td>
+                <td>Rs.{{ i.Others }}/-</td>
+                <td>{{ i.Date|date:'F' }}</td>
+
+                <td class="td-actions">
+                    <a
+                    href="{% url 'rest_admin:edit_assests' i.id %}"
+                    class="btn btn-success"
+                    data-original-title=""
+                    title=""
+                    >
+                    <i class="material-icons">edit</i>
+                    <div class="ripple-container"></div>
+                    </a>
+                </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}

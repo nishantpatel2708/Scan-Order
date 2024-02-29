@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+{% extends 'manager_base.html' %} 
+{% load static %} 
+  {% block head %}
+    <link href="{% static 'my_css/qr.css' %}" rel="stylesheet" />
+  {% endblock %} 
+{% block body %} 
+  {% if messages and order_det.table_no.rest_id == user.user_id %} 
+    {% for message in messages %} 
+      {% if message.tags == 'warning' %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
+      {% endif %} 
+    {% endfor %} 
+  {% endif %}
+
+<div class="col-md-12">
+  <div class="card">
+    <div class="card-header card-header-primary">
+      <h4 class="card-title">Today's Order</h4>
+      <p class="card-category">Manage Order From Here</p>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table">
+          <thead class="text-primary">
+            <tr>
+              <th>ID</th>
+              <th>Order ID</th>
+              <th>Table No</th>
+              <th>Dish Name</th>
+
+              <th>Quantity</th>
+              <th>Comment</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in order_list %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ i.id }}</td>
+              <td>{{ i.table_no.table_no }}</td>
+              <td>
+                {% for j in i.item.all %} {{ j.product.Dish_Name }}<br />
+                {% endfor %}
+              </td>
+
+              <td>
+                {% for j in i.item.all %} {{ j.quantity }}<br />
+                {% endfor %}
+              </td>
+              <td class="td-actions">
+                {% for j in i.item.all %} {{ j.comment }}
+                <a
+                  href="{% url 'rest_admin:com_u' j.id %}"
+                  class="btn btn-success"
+                  data-original-title=""
+                  title=""
+                >
+                  <i class="material-icons">edit</i> </a
+                ><br /><br />
+                {% endfor %}
+              </td>
+              <td>
+                {% for j in i.item.all %} {{ j.status }}<br />
+                {% endfor %}
+              </td>
+
+              <td>
+                <a class="btn btn-primary" href="{% url 'rest_admin:pdf' i.id%}"
+                  >PAYMENT</a
+                >
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-12">
+  <div class="card">
+    <div class="card-header card-header-primary">
+      <h4 class="card-title">Today's Order(Parcel)</h4>
+      <p class="card-category">Manage Parcel Order From Here</p>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table">
+          <thead class="text-primary">
+            <tr>
+              <th>ID</th>
+              <th>Order ID</th>
+              <th>Customer Name</th>
+              <th>Dish Name</th>
+
+              <th>Quantity</th>
+              <th>Comment</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in parcel_order_list %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ i.id }}</td>
+              <td>{{ i.customer.name }}</td>
+              <td>
+                {% for j in i.item.all %} {{ j.product.Dish_Name }}<br />
+                {% endfor %}
+              </td>
+
+              <td>
+                {% for j in i.item.all %} {{ j.quantity }}<br />
+                {% endfor %}
+              </td>
+              <td class="td-actions">
+                {% for j in i.item.all %} {{ j.comment }}
+                <a
+                  href="{% url 'manager:com_u' j.id %}"
+                  class="btn btn-success"
+                  data-original-title=""
+                  title=""
+                >
+                  <i class="material-icons">edit</i> </a
+                ><br /><br />
+                {% endfor %}
+              </td>
+              <td>
+                {% for j in i.item.all %} {{ j.status }}<br />
+                {% endfor %}
+              </td>
+
+              <td>
+                <a
+                  class="btn btn-primary"
+                  href="{% url 'manager:parcel_pdf' i.id %}"
+                  >PAYMENT</a
+                >
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
